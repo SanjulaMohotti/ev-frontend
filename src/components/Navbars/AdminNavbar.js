@@ -4,44 +4,71 @@ import React from "react";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import { useLocation } from "react-router-dom";
 
+const pageTitles = {
+  "/admin/dashboard": { label: "Admin Dashboard", icon: "fas fa-chart-line" },
+  "/admin/evdashboard": { label: "EV Dashboard", icon: "fas fa-bolt" },
+  "/admin/dashboardsolar": { label: "Solar Dashboard", icon: "fas fa-solar-panel" },
+  "/admin/maps": { label: "Charging Map", icon: "fas fa-map-marked-alt" },
+  "/admin/evowners": { label: "EV Owner Details", icon: "fas fa-car" },
+  "/admin/solarowners": { label: "Solar Owner Details", icon: "fas fa-solar-panel" },
+  "/smartplug/register": { label: "Smart Plug Registration", icon: "fas fa-plug" },
+  "/admin/smartplugs": { label: "Smart Plug Monitoring", icon: "fas fa-network-wired" },
+  "/admin/payment": { label: "Payments", icon: "fas fa-credit-card" },
+  "/admin/billing-history": { label: "Billing History", icon: "fas fa-history" },
+  "/admin/create-new-admin": { label: "Create New Admin", icon: "fas fa-user-plus" },
+};
+
 export default function Navbar() {
   const location = useLocation();
-  const isSmartPlugPage = location.pathname === "/smartplug/register";
-  console.log(isSmartPlugPage);
+
+  const pageInfo = Object.entries(pageTitles).find(([path]) =>
+    location.pathname.startsWith(path)
+  );
+  const { label = "Dashboard", icon = "fas fa-home" } = pageInfo?.[1] || {};
 
   return (
     <>
-      {/* Navbar */}
-      <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
-        <div className="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
-          {/* Brand */}
-          <a
-            className="text-black text-sm uppercase hidden lg:inline-block font-semibold"
-            href="#"
-            onClick={(e) => e.preventDefault()}
-          >
-            {isSmartPlugPage ? "Smart Plug Registration" : "Dashboard"}
-          </a>
-          {/* Form */}
-          <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-            <div className="relative flex w-full flex-wrap items-stretch">
-              <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300  bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
-                <i className="fas fa-search"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Search here..."
-                className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white  rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-              />
+      <nav
+        className="absolute top-0 left-0 z-10 flex items-center w-full md:flex-row md:flex-nowrap md:justify-start"
+        style={{
+          background: "transparent",
+          borderBottom: "1px solid rgba(0,0,0,0.12)",
+          padding: "0 24px",
+          height: "64px",
+          boxShadow: "0 2px 12px rgba(124,0,0,0.25)",
+        }}
+      >
+        <div className="flex flex-wrap items-center justify-between w-full px-4 mx-auto md:flex-nowrap md:px-10">
+
+          {/* Page title with icon */}
+          <div className="items-center hidden gap-3 lg:flex">
+            <div
+              style={{
+                width: "34px",
+                height: "34px",
+                borderRadius: "8px",
+                background: "rgba(255,255,255,0.15)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <i className={`${icon} text-sm`} style={{ color: "rgba(255,255,255,0.95)" }}></i>
             </div>
-          </form>
-          {/* User */}
-          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            <UserDropdown />
-          </ul>
+            <span
+              style={{
+                color: "#fff",
+                fontSize: "14px",
+                fontWeight: "600",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {label}
+            </span>
+          </div>
+
         </div>
       </nav>
-      {/* End Navbar */}
     </>
   );
 }
